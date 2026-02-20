@@ -80,6 +80,7 @@ There are three patches:
 ## Drawbacks
 - Much less flash for a file system.
 - Does not work with OTA updates.
+- ~2 seconds slower boot.
 
 ## Alternatives
 - [Launcher](https://github.com/bmorcelli/Launcher): An option for devices with an SD card. May be possible to make it work from flash like `Mesh Loader` does, but I am not sure.
