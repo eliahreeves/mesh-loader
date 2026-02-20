@@ -73,7 +73,7 @@ Each layout directory must contain these four files:
 This works by using Over-the-Air partitions meant for uploading firmware in deployment. The Esp32 chooses a partition to boot into, but the firmware in each partition never mark themselves as valid forcing a rollback to the loader partition on boot.
 
 There are three patches:
-1. Loader patches to make the esp32 not mark patches valid.
+1. Loader patches to make the esp32 not mark partitions as valid.
 2. File system patches to make the firmwares not conflict.
 3. Bluetooth patch to offset the Meshcore MAC address for easier connecting.
 
