@@ -70,8 +70,6 @@ MESHTASTIC_FS = $(MESHTASTIC_FW_DIR)/littlefs.bin
 MESHCORE_FW = $(MESHCORE_BUILD)/.pio/build/$(MESHCORE_ENV)/firmware.bin
 LOADER_FW = $(LOADER_SRC)/.pio/build/$(LOADER_ENV)/firmware.bin
 
-# Finding firmware and filesystem images is now done inline in the rules that need them.
-
 MESHTASTIC_BOOTLOADER = $(MESHTASTIC_BUILD)/.pio/build/$(MESHTASTIC_ENV)/bootloader.bin
 PARTITION_BIN = $(BUILD_DIR)/partitions.bin
 
