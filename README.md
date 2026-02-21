@@ -1,5 +1,5 @@
 # Mesh Loader
-"Dual Boot" firmware for running Meshcore and Meshtastic on a single Ep32 based device without re-flashing. Currently, only works for Heltec v4, but should be very simple to contribute patches for other variants so long as they have sufficient flash (probably 16MB+ maybe 8MB+).
+"Dual Boot" firmware for running Meshcore and Meshtastic on a single Ep32 based device without re-flashing. Currently, only works for Heltec v4, but should be very simple to contribute patches for other variants so long as they have sufficient flash (6MB+).
 
 ## What Does it Do?
 
