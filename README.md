@@ -1,11 +1,28 @@
 # Mesh Loader
-"Dual Boot" firmware for running Meshcore and Meshtastic on a single Ep32 based device without re-flashing. Currently, only works for Heltec v4, but should be very simple to contribute patches for other variants so long as they have sufficient flash (6MB+).
+"Dual Boot" firmware for running Meshcore and Meshtastic on a single Ep32 based device without re-flashing. 
 
 ## What Does it Do?
 
 This project pulls Meshtastic and Meshcore source code and patches it to be able to coexist. It then writes them along with needed file systems and a loader to swap between at boot. Each time the Esp32 boots it will first boot to the loader program. If there is no interaction for 2 seconds the loader will boot the last booted firmware if the button is pressed the other firmware will boot.
 
-## Flashing
+## Supported Variants
+
+- heltec_v4
+- heltec_v3
+
+Adding a config for your device is very easy so long as it has enough flash (~8MB+).
+
+## Flashing Precompiled Firmware
+
+1. Download the latest firmware for your device from [releases](https://github.com/eliahreeves/mesh-loader/releases/latest).
+
+2. Flash the firmware to address `0x0000`. I recommend using esptool:
+```bash
+esptool write-flash 0x0000 <firmware name>.bin
+```
+If you prefer a web flasher use a generic one like [EspConnect](https://thelastoutpostworkshop.github.io/ESPConnect/) or [EspWebTool](https://esptool.spacehuhn.com/) not the meshcore/meshtastic web flasher.
+
+## Compiling
 
 1. Clone the repo recursively to get submodules.
 ```bash
@@ -29,11 +46,9 @@ To flash the merged binary:
 ```bash
 make flash-merged
 ```
-Note that precompiled releases may be available in the releases section. These can be flashed with esptool or similar.
-
 ## Adding a Patch for Your Device
 ### Adding Loader Variant
-You need to add a new loader variant to [loader/variants](loader/variants). I recommend copying the platformio config for your variant from meshcore and then removing parts that are not needed.
+You need to add a new loader variant to [loader/variants](loader/variants) and [loader/boards](loader/boards). I recommend copying the config for your variant from meshcore and then removing parts that are not needed.
 ### Adding mk Config
 Create a new `.mk` file based on [variants/heltec_v4.mk](variants/heltec_v4.mk). This file needs to have the same name as the `.patch` file which must be the same as the variant name.
 
