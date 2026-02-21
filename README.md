@@ -1,5 +1,5 @@
 # Mesh Loader
-"Dual Boot" firmware for running Meshcore and Meshtastic on a single Ep32 based device without re-flashing. 
+"Dual Boot" firmware for running [Meshcore](https://meshcore.co.uk/) and [Meshtastic](https://meshtastic.org/) on a single Ep32 based device without re-flashing. 
 
 ## What Does it Do?
 
