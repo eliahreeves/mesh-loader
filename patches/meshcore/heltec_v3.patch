@@ -1,0 +1,26 @@
+diff --git a/variants/heltec_v3/HeltecV3Board.h b/variants/heltec_v3/HeltecV3Board.h
+index afdaf63..64155e5 100644
+--- a/variants/heltec_v3/HeltecV3Board.h
++++ b/variants/heltec_v3/HeltecV3Board.h
+@@ -23,7 +23,7 @@ private:
+ public:
+   RefCountedDigitalPin periph_power;
+ 
+-  HeltecV3Board() : periph_power(PIN_VEXT_EN) { }
++  HeltecV3Board() : periph_power(PIN_VEXT_EN, LOW) { }
+ 
+   void begin() {
+     ESP32Board::begin();
+diff --git a/variants/heltec_v3/target.cpp b/variants/heltec_v3/target.cpp
+index cdd2535..952d373 100644
+--- a/variants/heltec_v3/target.cpp
++++ b/variants/heltec_v3/target.cpp
+@@ -24,7 +24,7 @@ AutoDiscoverRTCClock rtc_clock(fallback_clock);
+ #endif
+ 
+ #ifdef DISPLAY_CLASS
+-  DISPLAY_CLASS display;
++  DISPLAY_CLASS display(&board.periph_power);
+   MomentaryButton user_btn(PIN_USER_BTN, 1000, true);
+ #endif
+ 

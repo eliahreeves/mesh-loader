@@ -1,4 +1,4 @@
 nvs,      data, nvs,      0x9000,   0x6000
 otadata,  data, ota,      0xf000,   0x2000
-meshtas,  app,  factory,  0x20000,  0x240000
-tastic_fs,data, spiffs,   0x620000, 0x1E0000
+meshtas,  app,  factory,    0x20000, 0x260000
+tastic_fs,data, spiffs,   0x6B0000, 0x150000

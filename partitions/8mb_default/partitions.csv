@@ -1,7 +1,7 @@
 nvs,      data, nvs,      0x9000,   0x6000
 otadata,  data, ota,      0xf000,   0x2000
-loader,   app,  factory,  0x20000,  0x60000
-meshcore, app,  ota_0,    0x80000,  0x180000
-meshtas,  app,  ota_1,    0x200000, 0x240000
-core_fs,  data, spiffs,   0x440000, 0x1E0000
-tastic_fs,data, spiffs,   0x620000, 0x1E0000
+loader, app,  factory,  0x20000,  0x80000
+meshcore, app,  ota_0,    0xA0000,  0x260000
+meshtas,  app,  ota_1,    0x300000, 0x260000
+core_fs,  data, spiffs,   0x560000, 0x150000
+tastic_fs,data, spiffs,   0x6B0000, 0x150000
