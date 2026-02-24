@@ -99,4 +99,5 @@ There are three patches:
 - ~2 seconds slower boot.
 
 ## Alternatives
+- [lunarcore](https://github.com/STCisGOOD/lunarcore): Custom firmware to run Meshcore, Meshtastic, AND Retuculum.
 - [Launcher](https://github.com/bmorcelli/Launcher): An option for devices with an SD card. May be possible to make it work from flash like `Mesh Loader` does, but I am not sure.
