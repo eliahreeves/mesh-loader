@@ -21,7 +21,8 @@ Adding a config for your device is very easy so long as it has enough flash (~8M
 esptool write-flash 0x0000 <firmware name>.bin
 ```
 If you prefer a web flasher use a generic one like [EspConnect](https://thelastoutpostworkshop.github.io/ESPConnect/) or [EspWebTool](https://esptool.spacehuhn.com/) not the meshcore/meshtastic web flasher.
-
+## Bluetooth
+Bluetooth can be a little weird if you have paired with the device before. If you have trouble make sure to forget the device from your phone. I have found mechtastic to be especially annoying, but reinstalling the app fixed it for me. After the first pair bluetooth works with no issues.
 ## Compiling
 
 1. Clone the repo recursively to get submodules.
