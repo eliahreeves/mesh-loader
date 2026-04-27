@@ -1,0 +1,72 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    name: Build ${{ matrix.variant }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        variant:
+          - heltec_v3
+          - heltec_v4
+
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v14
+
+      - name: Cache Nix store
+        uses: DeterminateSystems/magic-nix-cache-action@v8
+
+      - name: Cache PlatformIO packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            .platformio/packages
+            loader/.pio/libdeps
+          key: pio-${{ matrix.variant }}-${{ hashFiles('variants/${{ matrix.variant }}.mk', 'loader/variants/${{ matrix.variant }}/platformio.ini') }}
+          restore-keys: |
+            pio-${{ matrix.variant }}-
+
+      - name: Build firmware
+        run: nix develop --command make merged VARIANT=${{ matrix.variant }}
+        env:
+          PLATFORMIO_CORE_DIR: ${{ github.workspace }}/.platformio
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-${{ matrix.variant }}
+          path: build/firmware-merged-${{ matrix.variant }}.bin
+          if-no-files-found: error
+
+  release:
+    name: Publish release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all firmware artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: firmware-*
+          merge-multiple: true
+          path: release/
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*.bin
+          generate_release_notes: true

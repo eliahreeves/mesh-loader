@@ -14,7 +14,7 @@
     in {
       devShells.default = pkgs.mkShell {
         buildInputs = with pkgs; [
-          platformio
+          platformio-core
           gnumake
           (python3.withPackages (ps:
             with ps; [
