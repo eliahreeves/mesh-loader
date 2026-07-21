@@ -1,8 +1,7 @@
 diff --git a/examples/companion_radio/main.cpp b/examples/companion_radio/main.cpp
-index eff9efc..63f5b1a 100644
 --- a/examples/companion_radio/main.cpp
 +++ b/examples/companion_radio/main.cpp
-@@ -183,7 +183,7 @@ void setup() {
+@@ -189,7 +189,7 @@
    #endif
      the_mesh.startInterface(serial_interface);
  #elif defined(ESP32)
@@ -11,9 +10,9 @@ index eff9efc..63f5b1a 100644
    store.begin();
    the_mesh.begin(
      #ifdef DISPLAY_CLASS
+
 diff --git a/src/OTAValidation.cpp b/src/OTAValidation.cpp
 new file mode 100644
-index 0000000..cf9a80d
 --- /dev/null
 +++ b/src/OTAValidation.cpp
 @@ -0,0 +1,5 @@
@@ -22,19 +21,11 @@ index 0000000..cf9a80d
 +extern "C" bool verifyRollbackLater() {
 +    return true;
 +}
+
 diff --git a/src/helpers/ESP32Board.h b/src/helpers/ESP32Board.h
-index bade3e8..c290dfe 100644
 --- a/src/helpers/ESP32Board.h
 +++ b/src/helpers/ESP32Board.h
-@@ -8,6 +8,7 @@
- #include <rom/rtc.h>
- #include <sys/time.h>
- #include <Wire.h>
-+#include <esp_system.h>
- #include "driver/rtc_io.h"
- 
- class ESP32Board : public mesh::MainBoard {
-@@ -17,6 +18,12 @@ protected:
+@@ -23,6 +23,12 @@
  
  public:
    void begin() {
@@ -45,5 +36,5 @@ index bade3e8..c290dfe 100644
 +      esp_base_mac_addr_set(baseMac);
 +    }
      // for future use, sub-classes SHOULD call this from their begin()
-     startup_reason = BD_STARTUP_NORMAL;
+     startup_reason = BD_STARTUP_NORMAL;    
  

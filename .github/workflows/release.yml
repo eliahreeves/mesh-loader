@@ -18,18 +18,18 @@ jobs:
 
     steps:
       - name: Checkout (with submodules)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v14
+        uses: DeterminateSystems/nix-installer-action@v22
 
       - name: Cache Nix store
-        uses: DeterminateSystems/magic-nix-cache-action@v8
+        uses: DeterminateSystems/magic-nix-cache-action@v14
 
       - name: Cache PlatformIO packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             .platformio/packages
@@ -44,7 +44,7 @@ jobs:
           PLATFORMIO_CORE_DIR: ${{ github.workspace }}/.platformio
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: firmware-${{ matrix.variant }}
           path: build/firmware-merged-${{ matrix.variant }}.bin
@@ -59,14 +59,14 @@ jobs:
 
     steps:
       - name: Download all firmware artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           pattern: firmware-*
           merge-multiple: true
           path: release/
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: release/*.bin
           generate_release_notes: true
