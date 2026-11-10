@@ -1,8 +1,7 @@
 diff --git a/src/FSCommon.h b/src/FSCommon.h
-index fdc0b76ec..f8c69495c 100644
 --- a/src/FSCommon.h
 +++ b/src/FSCommon.h
-@@ -35,7 +35,7 @@ using namespace STM32_LittleFS_Namespace;
+@@ -35,7 +35,7 @@
  // ESP32 version
  #include "LittleFS.h"
  #define FSCom LittleFS
@@ -13,7 +12,6 @@ index fdc0b76ec..f8c69495c 100644
  #endif
 diff --git a/src/platform/esp32/OTAValidation.cpp b/src/platform/esp32/OTAValidation.cpp
 new file mode 100644
-index 000000000..cf9a80df9
 --- /dev/null
 +++ b/src/platform/esp32/OTAValidation.cpp
 @@ -0,0 +1,5 @@
@@ -22,3 +20,30 @@ index 000000000..cf9a80df9
 +extern "C" bool verifyRollbackLater() {
 +    return true;
 +}
+diff --git a/src/main.cpp b/src/main.cpp
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -1,4 +1,8 @@
+ #include "configuration.h"
++#ifdef ARCH_ESP32
++#include <esp_ota_ops.h>
++#include <esp_partition.h>
++#endif
+ #ifdef ARCH_PORTDUINO_WASM
+ #include <emscripten.h>
+ #endif
+@@ -364,6 +368,14 @@
+ #ifndef PIO_UNIT_TESTING
+ void setup()
+ {
++#ifdef ARCH_ESP32
++    // Return to factory Mesh Loader on the next reset; keep this app running.
++    const esp_partition_t *loader_partition = esp_partition_find_first(
++        ESP_PARTITION_TYPE_APP, ESP_PARTITION_SUBTYPE_APP_FACTORY, nullptr);
++    if (loader_partition != nullptr) {
++        esp_ota_set_boot_partition(loader_partition);
++    }
++#endif
+ 
+     // initialize power HAL layer as early as possible
+     powerHAL_init();

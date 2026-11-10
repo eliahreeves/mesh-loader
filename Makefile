@@ -86,11 +86,14 @@ $(MESHTASTIC_PATCH_MARKER): $(MESHTASTIC_PATCHES) $(PARTITION_MESHTASTIC) | $(BU
 	@cd $(MESHTASTIC_BUILD) && \
 		for patch in $(abspath $(MESHTASTIC_PATCHES)); do \
 			echo "    Applying $$(basename $$patch)..."; \
-			patch -p1 < $$patch; \
+			patch -p1 < "$$patch" || exit 1; \
 		done; \
 		echo "    Removing board_build.partitions from platformio.ini files..."; \
 		find . -name platformio.ini -exec sed -i '/board_build.partitions/d' {} +
 	@cp $(PARTITION_MESHTASTIC) $(MESHTASTIC_BUILD)/partitions.csv
+	@if [ "$(VARIANT)" = "heltec_v4" ]; then \
+		sed -i '/^\[env:heltec-v4\]$$/a board_build.partitions = partitions.csv' $(MESHTASTIC_BUILD)/variants/esp32s3/heltec_v4/platformio.ini; \
+	fi
 	@touch $@
 	@echo "    Meshtastic patches applied (build-time partitions: $(PARTITION_MESHTASTIC))"
 
@@ -127,9 +130,12 @@ $(MESHCORE_PATCH_MARKER): $(MESHCORE_PATCHES) $(PARTITION_MESHCORE) | $(BUILD_DI
 	@cd $(MESHCORE_BUILD) && \
 		for patch in $(abspath $(MESHCORE_PATCHES)); do \
 			echo "    Applying $$(basename $$patch)..."; \
-			patch -p1 < $$patch; \
+			patch -p1 < "$$patch" || exit 1; \
 		done
 	@cp $(PARTITION_MESHCORE) $(MESHCORE_BUILD)/partitions.csv
+	@if [ "$(VARIANT)" = "heltec_v4" ]; then \
+		sed -i '/^\[env:heltec_v4_companion_radio_ble\]$$/a board_build.partitions = partitions.csv' $(MESHCORE_BUILD)/variants/heltec_v4/platformio.ini; \
+	fi
 	@touch $@
 	@echo "    Meshcore patches applied (build-time partitions: $(PARTITION_MESHCORE))"
 
