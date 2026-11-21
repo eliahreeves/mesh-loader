@@ -36,6 +36,14 @@ ESP32_FRAMEWORK_TOOLS = .platformio/packages/framework-arduinoespressif32/tools
 GEN_ESP32PART = python3 $(ESP32_FRAMEWORK_TOOLS)/gen_esp32part.py
 ESPTOOL = python3 .platformio/packages/tool-esptoolpy/esptool.py
 
+# The pioarduino platform used by Meshtastic creates its own Python env (penv)
+# and installs an unpinned `pioarduino` core into it. pioarduino >= 6.2.0 wants
+# SCons 4.11.1 while the platform pins tool-scons 4.8.1, so the platform deletes
+# the running SCons mid-build ("No module named 'SCons.Tool.FortranCommon'").
+# Pin the penv core to match the platform and the nix-provided PlatformIO.
+PLATFORMIO_CORE_DIR ?= $(CURDIR)/.platformio
+PENV_PIOARDUINO_VERSION = 6.1.19
+
 # Directory structure
 SRC_DIR = modules
 BUILD_DIR = build
@@ -100,6 +108,10 @@ $(MESHTASTIC_PATCH_MARKER): $(MESHTASTIC_PATCHES) $(PARTITION_MESHTASTIC) | $(BU
 # Build meshtastic firmware
 $(MESHTASTIC_FW) $(MESHTASTIC_FS): $(MESHTASTIC_PATCH_MARKER)
 	@echo "==> Building Meshtastic firmware..."
+	@cd $(MESHTASTIC_BUILD) && pio pkg install -e $(MESHTASTIC_ENV)
+	@$(PLATFORMIO_CORE_DIR)/penv/bin/uv pip install --quiet \
+		--python $(PLATFORMIO_CORE_DIR)/penv/bin/python \
+		"pioarduino==$(PENV_PIOARDUINO_VERSION)"
 	@cd $(MESHTASTIC_BUILD) && pio run -e $(MESHTASTIC_ENV)
 	@MESHTASTIC_FW_SRC=$$(find $(MESHTASTIC_FW_DIR) -maxdepth 1 -name 'firmware-*.bin' ! -name '*.factory.bin' ! -name 'littlefs-*.bin' 2>/dev/null | head -1); \
 	if [ -n "$$MESHTASTIC_FW_SRC" ]; then \
